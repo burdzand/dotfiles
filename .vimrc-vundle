@@ -1,35 +1,34 @@
-" ==============
-"  Initialization {{{1
-"" ==============
 
-    " plugins expect bash - not fish, zsh, etc
-    set shell=bash\ --login
+" ============== ============== ============== ============== Initialization
+  " plugins expect bash - not fish, zsh, etc
+  set shell=bash\ --login
 
-    " Use Vim settings instead of Vi settings.
-    set nocompatible
-    filetype off
+  set directory=$HOME/.vim/swapfiles//;'
 
-    " If you can't spell, tough.
-    set nospell
+  " Use Vim settings instead of Vi settings.
+  set nocompatible
+  filetype off
 
-    " Assume a dark background
-    set background=dark
+  " If you can't spell, tough.
+  set nospell
 
-    " Clear Autocommands
-    autocmd!
+  " Assume a dark background
+  set background=dark
 
-    " Let Vim look for settings in a file
-    set modeline
-    set modelines=5
+  " Clear Autocommands
+  autocmd!
 
-    " If vimrc has been modified, re-source it for fast modifications
-    autocmd! BufWritePost *vimrc source %
+  " Let Vim look for settings in a file
+  set modeline
+  set modelines=5
 
-    " Set Leader
-    let g:mapleader = ","
+  " If vimrc has been modified, re-source it for fast modifications
+  autocmd! BufWritePost *vimrc source %
 
-    " Wildmode options {{{2
-    " ----------------
+  " Set Leader
+  let g:mapleader = ","
+
+  " Wildmode options {
     set wildmenu
     set wildmode=longest:full,full
     set wildignore+=*.o,*.out,*.obj,*.rbc,*.rbo,*.class,*.gem
@@ -39,167 +38,162 @@
     set wildignore+=*.exe,*.dll
     set wildignore+=*.pyc
     set wildignore+=*.DS_Store
-    " }}}
+  " } Wildmode
 
-"" ==================== }}}
-"  Vundle Plugins {{{1
-"" ==============
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Vundle Plugins {{{1
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
 
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
-    " alternatively, pass a path where Vundle should install plugins
-    "call vundle#begin('~/some/path/here')
+  " let Vundle manage Vundle, required
+  Plugin 'VundleVim/Vundle.vim'
 
-    " let Vundle manage Vundle, required
-    Plugin 'VundleVim/Vundle.vim'
+  " Approved Plugins
+  Plugin 'nsf/gocode', {'rtp': 'vim/'}
+  Plugin 'zchee/deoplete-go', { 'do': 'make'}
 
-    " Approved Plugins
-    Plugin 'nsf/gocode', {'rtp': 'vim/'}
-    Plugin 'zchee/deoplete-go', { 'do': 'make'}
+  if has('nvim')
+    Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  else
+    Plugin 'Shougo/deoplete.nvim'
+    Plugin 'roxma/nvim-yarp'
+    Plugin 'roxma/vim-hug-neovim-rpc'
+  endif
 
-    if has('nvim')
-      Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-      Plugin 'Shougo/deoplete.nvim'
-      Plugin 'roxma/nvim-yarp'
-      Plugin 'roxma/vim-hug-neovim-rpc'
-    endif
-    Plugin 'godlygeek/tabular'
-    Plugin 'scrooloose/nerdtree'
-    Plugin 'scrooloose/nerdcommenter'
-    Plugin 'jistr/vim-nerdtree-tabs'
-    Plugin 'fatih/vim-go'
-    Plugin 'Lokaltog/vim-easymotion'
-    Plugin 'majutsushi/tagbar'
-    Plugin 'tpope/vim-repeat'
-    Plugin 'tpope/vim-speeddating'
-    Plugin 'tpope/vim-surround'
-    Plugin 'tpope/vim-pathogen'
-    Plugin 'tpope/vim-fugitive'
-    Plugin 'tpope/vim-git'
-    Plugin 'tpope/vim-commentary'
-    Plugin 'vim-scripts/AutoClose'
-    Plugin 'bling/vim-airline'
-    Plugin 'vim-airline/vim-airline-themes'
-    Plugin 'bling/vim-bufferline'
-    Plugin 'airblade/vim-gitgutter'
-    Plugin 'scrooloose/syntastic'
-    Plugin 'plasticboy/vim-markdown'
-    Plugin 'mbbill/undotree'
-    Plugin 'myusuf3/numbers.vim'
-    Plugin 'ekalinin/Dockerfile.vim'
-    Plugin 'MarcWeber/vim-addon-mw-utils'
+  Plugin 'godlygeek/tabular'
+  Plugin 'scrooloose/nerdtree'
+  Plugin 'scrooloose/nerdcommenter'
+  Plugin 'jistr/vim-nerdtree-tabs'
+  Plugin 'fatih/vim-go'
+  Plugin 'Lokaltog/vim-easymotion'
+  Plugin 'majutsushi/tagbar'
+  Plugin 'tpope/vim-repeat'
+  Plugin 'tpope/vim-speeddating'
+  Plugin 'tpope/vim-surround'
+  Plugin 'tpope/vim-pathogen'
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'tpope/vim-git'
+  Plugin 'tpope/vim-commentary'
+  Plugin 'vim-scripts/AutoClose'
+  Plugin 'bling/vim-airline'
+  Plugin 'vim-airline/vim-airline-themes'
+  Plugin 'bling/vim-bufferline'
+  Plugin 'airblade/vim-gitgutter'
+  Plugin 'scrooloose/syntastic'
+  Plugin 'plasticboy/vim-markdown'
+  Plugin 'mbbill/undotree'
+  " Plugin 'myusuf3/numbers.vim'
+  Plugin 'ekalinin/Dockerfile.vim'
+  Plugin 'MarcWeber/vim-addon-mw-utils'
 
-    call vundle#end()
-    filetype plugin indent on
+  call vundle#end()
+  filetype plugin indent on
 
-"" =============== }}}
-"  Filetype Association {{{1
-"" ====================
-
-    au BufRead,BufNewFile *vimrc set foldmethod=marker
-
-    augroup MarkdownFiles " Instead of this Modulo file bullshit
-        autocmd BufNewFile,BufReadPost *.md set filetype=markdown
-    augroup end
-
-    au BufWritePost ~/.bashrc !source %
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Filetype Association
+  au BufRead,BufNewFile *vimrc set foldmethod=marker
+  augroup MarkdownFiles " Instead of this Modulo file bullshit
+      autocmd BufNewFile,BufReadPost *.md set filetype=markdown
+  augroup end
+  au BufWritePost ~/.bashrc !source %
 
 
-"" ============= }}}
-"  Look and Feel {{{1
-"" =============
-    " Basics / Misc {{{2
-    " -------------
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Look and Feel
+  " Basics / Misc {
+      " Used for saving git and hg commits
+      filetype on
+      filetype off
 
-        " Used for saving git and hg commits
-        filetype on
-        filetype off
+      " Set to allow you to backspace while back past insert mode
+      set backspace=2
 
-        " Set to allow you to backspace while back past insert mode
-        set backspace=2
+      " Increase History
+      set history=999
 
-        " Increase History
-        set history=999
+      " Enable numbers in the left column
+      set number
 
-        " Enable numbers in the left column
-        set number
+      " Give context to where the cursor is positioned in a file
+      set scrolloff=14
 
-        " Give context to where the cursor is positioned in a file
-        set scrolloff=14
+      " Use UTF-8 encoding
+      set encoding=utf-8 nobomb
 
-        " Use UTF-8 encoding
-        set encoding=utf-8 nobomb
+      " Hide buffers after they are abandoned
+      set hidden
 
-        " Hide buffers after they are abandoned
-        set hidden
+      " Disable files that don't need to be created
+      set noswapfile
+      set nobackup
+      set nowb
 
-        " Disable files that don't need to be created
-        set noswapfile
-        set nobackup
-        set nowb
+      " Auto Complete Menu
+      set completeopt=longest,menu
 
-        " Auto Complete Menu
-        set completeopt=longest,menu
-
-    " }}}
-    " Tabbing and Spaces {{{2
-    " ------------------
-        " Use 4 spaces instead of tabs
-        set tabstop=4
-        set shiftwidth=4
-        set expandtab
-
-        " Auto indent
-        set autoindent
-
-        " replace trailing whitespace and tabs with unicode characters
-        exec "set listchars=tab:\uBB\uBB,trail:\u2716,nbsp:~"
-        " set list
-    " }}}
-    " Color Settings {{{2
-    " --------------
-
-        " Enable syntax highlighting
-        syntax enable
-
-        " Set font and color scheme for Gvim
-        set guifont=Inconsolata\ for\ Powerline:h14
-        if has("gui_running")
-            if has("gui_win32")
-                set guifont=Consolas:h10:cANSI
-            endif
-        else
-            set t_Co=256
-        endif
+      " Cursor line
+      set cursorline
+      hi cursorline cterm=none term=none
+      autocmd WinEnter * setlocal cursorline
+      autocmd WinLeave * setlocal nocursorline
+      highlight CursorLine guibg=#303000 ctermbg=234
 
 
-        " }}}
-    " Persistent Undo {{{2
-    " ---------------
-        if v:version >= 703
-            set undofile
-            set undodir=~/.vim/tmp,~/.tmp,~/tmp,~/var/tmp,/tmp
-        endif
-    " }}}
-    " Spelling / Typos {{{2
-    " ----------------
-        :command! WQ wq
-        :command! Wq wq
-        :command! W w
-        :command! Q q
-    " }}}
-    " Open file and goto previous location {{{2
-    " ------------------------------------
-        autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
-                   \|     exe "normal! g`\""
-                   \|  endif
-    " }}}
-"" ============== }}}
-"  Plugin Settings {{{1
-"" ===============
-    " Airline Settings {{{2
-    " ----------------
+      let g:TerminusFocusReporting=0
+  " }  Basics / Misc
+
+  " Tabbing and Spaces {
+      " Use 4 spaces instead of tabs
+      set tabstop=4
+      set shiftwidth=4
+      set expandtab
+
+      " Auto indent
+      set autoindent
+
+      " replace trailing whitespace and tabs with unicode characters
+      " exec "set listchars=tab:\uBB\uBB,trail:\u2716,nbsp:~"
+      " set list
+  " } Tabbing
+
+  " Color Settings {
+      " Enable syntax highlighting
+      syntax enable
+
+      " Set font and color scheme for Gvim
+      set guifont=Inconsolata\ for\ Powerline:h14
+      if has("gui_running")
+          if has("gui_win32")
+              set guifont=Consolas:h10:cANSI
+          endif
+      else
+          set t_Co=256
+      endif
+  " } Tabbing
+
+  " Persistent Undo {
+      if v:version >= 703
+          set undofile
+          set undodir=~/.vim/tmp,~/.tmp,~/tmp,~/var/tmp,/tmp
+      endif
+  " } Persistent
+
+  " Spelling / Typos {
+      :command! WQ wq
+      :command! Wq wq
+      :command! W w
+      :command! Q q
+  " } Spelling
+
+  " Open file and goto previous location {
+      autocmd BufReadPost *  if line("'\"") > 1 && line("'\"") <= line("$")
+                  \|     exe "normal! g`\""
+                  \|  endif
+  " } Open file
+
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Plugin Settings {
+    " Airline Settings {
         " let g:airline#extensions#tabline#buffer_idx_mode = 1
         let g:airline#extensions#tabline#buffer_nr_show = 1
         let g:airline#extensions#tabline#enabled = 1
@@ -207,23 +201,22 @@
         let g:bufferline_echo = 0
         let g:airline_theme = 'distinguished'
         let g:airline_powerline_fonts = 1
-    " }}}
-    " Markdown Settings {{{2
-    " ----------------
+    " }  Airline Settings
+
+    " Markdown Settings {
        let g:vim_markdown_folding_disabled = 1
-    " }}}
-    " Vim Session Persist {{{2
-    " -------------------
+    " } Markdown
+
+    " Vim Session Persist {
         let g:session_autosave = 1
         let g:session_autoload = 1
-    " }}}
-    " NERDTree {{{2
-    " --------
+    " } Vim Session
 
+    " NERDTree {
       " General properties
       let g:NERDTreeDirArrows=1
       let g:NERDTreeMinimalUI=1
-      let g:NERDTreeIgnore=['\.o$', '\.pyc$', '\.php\~$']
+      let g:NERDTreeIgnore=['\.o$', '\.pyc$', '__pycache__$', '\.php\~$']
       let g:NERDTreeWinSize = 35
 
       " Make sure that when NT root is changed, Vim's pwd is also updated
@@ -231,30 +224,16 @@
       let g:NERDTreeShowLineNumbers = 1
       let g:NERDTreeAutoCenter = 1
 
-    " Open NERDTree on startup, when no file has been specified
-    autocmd VimEnter * if !argc() | NERDTree | endif
-    " }}}
-    " Neocomplete {{{2
-    " -----------
-      " Disable AutoComplPop.
-      let g:acp_enableAtStartup = 0
+      " Open NERDTree on startup, when no file has been specified
+      autocmd VimEnter * if !argc() | NERDTree | endif
+    " } NERDTree
 
-      " Use neocomplete.
-      let g:neocomplete#enable_at_startup = 1
-
-      " Use smartcase.
-      let g:neocomplete#enable_smart_case = 1
-
-      " Set minimum syntax keyword length.
-      let g:neocomplete#sources#syntax#min_keyword_length = 3
-      let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'"
-    "}}}
-    " Syntastic {{{2
+    " Syntastic {
       let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
       let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
-    " }}}
-    " Vim-go {{{2
-    " --------
+    " } Syntastic
+
+    " Vim-go {
       let g:go_fmt_fail_silently = 1
       let g:go_fmt_command = "gofmt" "Explicited the formater plugin (gofmt, goimports, goreturn...)
 
@@ -313,49 +292,52 @@
           \ 'ctagsbin'  : 'gotags',
           \ 'ctagsargs' : '-sort -silent'
       \ }
-    "}}}
-"" ======== }}}
-"  Mappings {{{1
-"" ========
-    " Disable Q (Command Shell Mode) {{{2
-    " ------------------------------
+
+    " } Vim-go
+
+    let g:go_fmt_command = "goimports"
+    let g:deoplete#enable_at_startup = 1
+
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Mappings {{{1
+    " Disable Q (Command Shell Mode) {
         nnoremap Q <nop>
         nnoremap gq <nop>
         nnoremap q: <nop>
-    " }}}
-    " * No longer moves the cursor when hitting it the first time {{{2
-    " -----------------------------------------------------------
+    " } Disable Q
+
+    " * No longer moves the cursor when hitting it the first time {
         nmap * *Nzz
         nmap # #Nzz
-    " }}}
-    " Y y$ Fix {{{2
-    " --------
+    " } No longer moves
+
+    " Y y$ Fix {
         " Why the hell isn't this the normal behavior?
         nnoremap Y y$
-    " }}}
-    " Easy Window Switching {{{2
-    " ---------------------
+    " }
+
+    " Easy Window Switching {
         map <C-h> <C-w>h
         map <C-j> <C-w>j
         map <C-k> <C-w>k
         map <C-l> <C-w>l
-    " }}}
-    " Space folds and unfolds {{{2
-    " -----------------------
+    " } Window Switching
+
+    " Space folds and unfolds {
         nnoremap <Space> za
         vnoremap <Space> za
-    " }}}
-    " Zencoding {{{2
-    " ---------
+    " } Space folds
+
+    " Zencoding {
         let g:user_zen_leader_key='<c-e>'
         let g:use_zen_complete_tag = 1
-    " }}}
-    " Misc {{{2
-    " ----
-        imap jj <Esc>:redraw!<CR>:syntax sync fromstart<CR>
-    " }}}
-    " Vimrc Toggle {{{2
-    " ------------
+    " } Zencoding
+
+    " Misc {
+      imap jj <Esc>:redraw!<CR>:syntax sync fromstart<CR>
+
+
+    " Vimrc Toggle {
         function! ToggleVimrc()
             if expand("%:p") =~ $MYVIMRC
                 :bd
@@ -364,33 +346,27 @@
             endif
         endfunction
         nmap <leader>v :call ToggleVimrc()<CR>
-    " }}}
-    " Cheatsheet Toggle {{{2
-    " ------------
-        nmap <F2> :!pandoc ~/.vim/CHEATSHEET.md \| lynx -stdin<cr>:redraw!<cr>
-    " }}}
-    " Markdown Preview Toggle {{{2
-    " ------------
-        nmap <F7> :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
-    " }}}
-    " NERDTreeToggle {{{2
-    " --------------
-    function! NERDTreeToggleOrFocus()
-        if expand("%") =~ "NERD_tree"
-            :NERDTreeTabsToggle
-        else
-            call NERDTreeFocus()
-        endif
-    endfunction
+    " } Toggle
+
+    " Cheatsheet Toggle {
+    nmap <F2> :!pandoc ~/.vim/CHEATSHEET.md \| lynx -stdin<cr>:redraw!<cr>
+
+
+    " Markdown Preview Toggle {
+      nmap <F7> :w<cr>:!pandoc % \| lynx -stdin<cr>:redraw!<cr>
+
+    " NERDTreeToggle {
+        function! NERDTreeToggleOrFocus()
+            if expand("%") =~ "NERD_tree"
+                :NERDTreeTabsToggle
+            else
+                call NERDTreeFocus()
+            endif
+        endfunction
         nmap <leader>n :call NERDTreeToggleOrFocus()<CR>
-    " }}}
-    " Quickfix list nav with C-n and C-m {{{2
-    " ----------------------------------
-        map <C-n> :cn<CR>
-        map <C-m> :cp<CR>
-    " }}}
-    " Multipurpose Tab-key {{{2
-    " --------------------
+    " } NERDTreeToggle
+
+    " Multipurpose Tab-key {
     " Taken from https://github.com/gregstallings/vimfiles/blob/master/vimrc
         " Indent if at the beginning of a line, else do completion
         function! InsertTabWrapper()
@@ -408,9 +384,9 @@
         "inoremap <tab> <c-r>=InsertTabWrapper()<cr>
         "inoremap <s-tab> <c-n>
         "inoremap <c-c> <C-r>=TriggerSnippet()<cr>
-    " }}}
-    " Toggle Paste/No Paste {{{2
-    " --------------------
+    " } Multipurpose Tab-key
+
+    " Toggle Paste/No Paste {
         function! TogglePaste()
             if &paste
                 :set nopaste
@@ -419,11 +395,10 @@
             endif
         endfunction
         nmap <leader>p :call TogglePaste()<CR>
-    " }}}
-"" ========================= }}}
-"" ========================= }}}
-"  Performance Optimizations {{{1
-"" =========================
+    " }
+
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Performance Optimizations
 
     " Fast terminal connections
     set ttyfast
@@ -434,18 +409,17 @@
     " Syntax optimazations
     syntax sync minlines=256
 
-"" =================== }}}
-"  Post Configurations {{{1
-"" ===================
+" ============== ============== ============== ==============
+" ============== ============== ============== ============== Post Configurations
     " Find local Vim files"
     silent! source ~/.vimrc.local
     silent! source ./.vimrc.local
     " Remap mappings that get overwritten by plugins
     set rtp+=~/.vim/after/
-"" }}}
-"" ==============
+
+
+" ============== ============== ============== ==============
+" ============== ============== ============== ==============
+
 
 " vim: foldmethod=marker foldmarker={{{,}}} ts=2 sts=2 sw=2 expandtab:
-
-let g:go_fmt_command = "goimports"
-let g:deoplete#enable_at_startup = 1
